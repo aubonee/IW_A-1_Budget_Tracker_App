@@ -1,4 +1,7 @@
 const addExpenseButton = document.getElementById("add-expense-button");
+console.log(addExpenseButton);
+// const deleteEntryButton = document.querySelector(".delete-entry");
+// console.log(deleteEntryButton);
 
 const descriptionInput = document.getElementById("description");
 const valueInput = document.getElementById("value");
@@ -67,7 +70,39 @@ calculateBudget();
 /**
  * Task 3: Delete Entry
  */
-function deleteEntry() {}
+
+
+// function deleteEntry() {
+//   console.log("listItem");
+
+// }
+function deleteEntry() {
+  const listItem = this.closest("li");
+  const list = listItem.parentElement;
+  const valueString = listItem.querySelector(".text-green-600, .text-red-600").innerHTML.replace(/,/g, "");
+  const value = parseFloat(valueString);
+
+
+  list.removeChild(listItem);
+
+  
+  if (list.id === "income-list") {
+    calculateIncome();
+  } else if (list.id === "expense-list") {
+    calculateExpense();
+  }
+
+  // Recalculate the budget after deleting an item
+  calculateBudget();
+  
+}
+const existingDeleteButtons = document.querySelectorAll("#income-list .text-red-500, #expense-list .text-red-500");
+existingDeleteButtons.forEach(button => {
+  button.addEventListener("click", deleteEntry);
+});
+
+ 
+
 
 function addEntry() {
   const type = selectInput.value;
@@ -119,3 +154,4 @@ function addEntry() {
 }
 
 addExpenseButton.addEventListener("click", addEntry);
+deleteEntryButton.addEventListener("click", deleteEntry);
